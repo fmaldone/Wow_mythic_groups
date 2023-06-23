@@ -11,20 +11,24 @@ class myth_player:
 class wow_char:
     def __init__(self,name, char=dict):
         self.char_name = name
+        self.wow_class = char["Class"]
+        self.role = char["Role"]
         self.key_level = char["level"]
         self.dungeon = char["dungeon"]
     
     def __str__(self):
-        return ("\nCharacter name: " + self.char_name + "\nKey Level: " + str(self.key_level)
+        return ("\nCharacter name: " + self.char_name + "\nRole(s): " + str(self.role) +
+                "\nKey Level: " + str(self.key_level)
                 + "\nDungeon: " + self.dungeon + "\n")
 
 players_list = []
 toon_list = []
 
-keystone_dict = {"Jmartz": {"Calioma" : {"level": 7, "dungeon": "freehold"},
-                            "Solemartz": {"level": 3, "dungeon": "Vortex Pinnacle"}},
-                "Cardinal": {"Fluke" : {"level": 14, "dungeon": "Underrot"},
-                             "Gael" : {"level": 10, "dungeon": "Brackenhide"}}}
+keystone_dict = {"Jmartz": {"Calioma" : {"level": 7, "dungeon": "freehold", "Class": "Priest", "Role": ["Healer"]},
+                            "Solemartz": {"level": 3, "dungeon": "Vortex Pinnacle", "Class": "Mage", "Role": ["DPS"]},
+                            "Jmartz": {"level": 16, "dungeon": "Halls of Infusion", "Class": "Warrior", "Role": ["Tank", "DPS"]}},
+                "Cardinal": {"Fluke" : {"level": 14, "dungeon": "Underrot", "Class": "Hunter", "Role": ["DPS"]},
+                             "Gael" : {"level": 10, "dungeon": "Brackenhide", "Class": "Druid", "Role": ["DPS"]}}}
 
 for key, value in keystone_dict.items():
     toon_list_player = list(keystone_dict[key].keys())
