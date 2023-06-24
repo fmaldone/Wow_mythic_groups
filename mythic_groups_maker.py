@@ -1,49 +1,71 @@
 
 
-class myth_player:
-    def __init__(self, player, *characters):
-        self.name = player
-        self.list_of_chars = characters
-
-    def __str__(self):
-        return self.name + " has the following characters: " + str(self.list_of_chars)
-
-class wow_char:
-    def __init__(self,name, char=dict):
-        self.char_name = name
-        self.wow_class = char["Class"]
-        self.role = char["Role"]
-        self.key_level = char["level"]
-        self.dungeon = char["dungeon"]
-    
-    def __str__(self):
-        return ("\nCharacter name: " + self.char_name + "\nRole(s): " + str(self.role) +
-                "\nKey Level: " + str(self.key_level)
-                + "\nDungeon: " + self.dungeon + "\n")
-
-players_list = []
-toon_list = []
-
+#%% Data
 keystone_dict = {"Jmartz": {"Calioma" : {"level": 7, "dungeon": "freehold", "Class": "Priest", "Role": ["Healer"]},
                             "Solemartz": {"level": 3, "dungeon": "Vortex Pinnacle", "Class": "Mage", "Role": ["DPS"]},
                             "Jmartz": {"level": 16, "dungeon": "Halls of Infusion", "Class": "Warrior", "Role": ["Tank", "DPS"]}},
                 "Cardinal": {"Fluke" : {"level": 14, "dungeon": "Underrot", "Class": "Hunter", "Role": ["DPS"]},
                              "Gael" : {"level": 10, "dungeon": "Brackenhide", "Class": "Druid", "Role": ["DPS"]}}}
 
-for key, value in keystone_dict.items():
-    toon_list_player = list(keystone_dict[key].keys())
-    locals()[key] = myth_player(key, *toon_list_player)
-    players_list.append(locals()[key])
+#%% Classes 
+class Myth_Player:
+    def __init__(self, player, char_list):
+        self.player_name = player
+        self.list_of_chars = char_list
+        self.string_list_of_chars = [x.char_name for x in char_list]
+    
+    def print_character_list(self):
+        '''Prints all characters from all players in the pool'''
+        print(f"{self.player_name} has the following characters: \n")
+        for i in self.list_of_chars:
+            print(i)
+
+    def __str__(self):
+        return self.player_name + " has the following characters:" + str(self.string_list_of_chars)
+
+class Wow_Char:
+    def __init__(self,name, char_dict):
+        self.char_name = name
+        self.wow_class = char_dict["Class"]
+        self.role = char_dict["Role"]
+        self.key_level = char_dict["level"]
+        self.dungeon = char_dict["dungeon"]
+    
+    def __str__(self):
+        return ("Character name: " + self.char_name + "\nRole(s): " + str(self.role) +
+                "\nKey Level: " + str(self.key_level)
+                + "\nDungeon: " + self.dungeon + "\n")
+
+#%% Printing Helper Functions
+def print_all_players():
+    '''Prints all players signed up'''
+    print("List of all players: ")
+    for i in range(len(players_list)):
+        print(players_list[i])
+
+def print_all_characters():
+    '''Prints all characters from all players in the pool'''
+    print("List of all characters and keys: ")
+    for i in players_list:
+        for x in i.list_of_chars:
+            print(x)
+
+
+players_list = []
 
 for i in keystone_dict:
     char_list = list(keystone_dict[i].keys())
+    # print(i) ## Player names ie: Jmartz
+    # print(char_list) ## Character names ie: Calioma
+    toon_list = []
     for num in char_list:
-        toon = wow_char(num, keystone_dict[i][num])
-        toon_list.append(toon)
+        locals()[num] = Wow_Char(num, keystone_dict[i][num])  # create an instance of the character object
+        toon_list.append(locals()[num])
+    locals()[i] = Myth_Player(i, toon_list)  # Create an instance of the player object with the list of character objects
+    players_list.append(locals()[i])
 
-for i in range(len(players_list)):
-    print(players_list[i])
-
-for i in range(len(toon_list)):
-    print(toon_list[i])
-
+print_all_players()
+print("\n")
+print_all_characters()
+print("\n")
+Jmartz.print_character_list() # Print an ind players characters
